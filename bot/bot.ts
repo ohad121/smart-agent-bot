@@ -13,6 +13,7 @@ import {
 } from './conversations';
 import { conversations, createConversation } from '@grammyjs/conversations';
 import { LOGGER } from '../logger';
+import { realestateConversation } from './conversations/realEstateConversation';
 dotenv.config();
 
 //Env vars
@@ -62,6 +63,7 @@ bot.use(
 bot.use(conversations());
 bot.use(createConversation(startConversation));
 bot.use(createConversation(davinciConverstaion));
+bot.use(createConversation(realestateConversation))
 
 // LOGIC
 
@@ -79,6 +81,10 @@ bot.command('help', async (ctx) => {
 //DAVINCI COMMAND
 bot.command('davinci', async (ctx) => {
     await ctx.conversation.enter('davinciConverstaion');
+});
+
+bot.command('real_estate', async (ctx) => {
+    await ctx.conversation.enter('realestateConversation');
 });
 
 // Always exit any conversation upon /cancel

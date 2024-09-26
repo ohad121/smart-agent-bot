@@ -1,4 +1,4 @@
-import { CreateCompletionResponse, CreateCompletionResponseChoicesInner } from "openai";
+
 export interface Message {
     role: string;
     content: string;
@@ -26,8 +26,8 @@ export interface ChatCompletion {
     id: string;
     object: string;
     created: number;
-    choices?: Choice[] | CreateCompletionResponseChoicesInner[];
+    choices?: Choice[];
     usage?: Usage;
 }
 
-export type ChatCompletionResponse = ChatCompletion | CreateCompletionResponse;
+export type ChatCompletionResponse = ChatCompletion;

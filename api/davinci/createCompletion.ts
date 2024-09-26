@@ -1,51 +1,29 @@
+import OpenAI from 'openai';
 import { LOGGER } from '../../logger';
-import { openAiClient } from '../openAI';
-import { ChatCompletion } from '../models';
 import {
-    FREQUENCY_PENALTY,
-    MAX_TOKENS,
-    PRESENCE_PENALTY,
-    TEMERATURE,
-    TOP_P,
-} from '../../constants';
+    ChatCompletion,
+    ChatCompletionCreateParams,
+} from 'openai/resources/chat';
 
-const modelName = 'text-davinci-003';
+const openAiClient = new OpenAI({
+    apiKey: process.env.OPEN_AI_TOKEN,
+});
 
-export const createCompletion = async (prompt: string): Promise<ChatCompletion | null | undefined> => {
-
+export const createCompletion = async (params: ChatCompletionCreateParams): Promise<ChatCompletion | null> => {
     try {
-        const response = await openAiClient.createCompletion({
-            model: modelName,
-            prompt: prompt,
-            temperature: TEMERATURE,
-            max_tokens: MAX_TOKENS,
-            top_p: TOP_P,
-            frequency_penalty: FREQUENCY_PENALTY,
-            presence_penalty: PRESENCE_PENALTY,
-        }).then((res) => {
-            return res.data;
-        }).catch((err) => {
-            LOGGER.error(`[createCompletion][Error while creating completion]`, {
-                metadata: err,
-            });
-            return null;
-        });
+        const response = await openAiClient.chat.completions.create(params);
 
-        if (response === null) {
+        // Ensure the response is of the correct type
+        if (response && 'id' in response && 'choices' in response) {
+            return response;
+        } else {
+            LOGGER.error(`[createCompletion][Unexpected response type received]`);
             return null;
         }
-
-        return {
-            id: response.id,
-            object: response.object,
-            created: response.created,
-            choices: response.choices,
-            usage: response.usage,
-        };
-
     } catch (error) {
         LOGGER.error(`[createCompletion][Error while creating completion]`, {
             metadata: error,
         });
+        return null;
     }
 };

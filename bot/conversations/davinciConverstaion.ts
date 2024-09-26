@@ -1,10 +1,10 @@
-import { BotContext, ConverstaionContext } from '../types';
+import { BotContext, ConversationContext } from '../types';
 import { LOGGER } from '../../logger';
 import { addDavinciMessage, getUserByTelegramId } from '../../mongodb/operations';
 import { createCompletion } from '../../api';
 
 const davinciConverstaion = async (
-    conversation: ConverstaionContext,
+    conversation: ConversationContext,
     ctx: BotContext
 ) => {
 
@@ -43,14 +43,14 @@ const davinciConverstaion = async (
             return;
         }
 
-        const davinciMessage = davinciResponse.choices?.[0]?.text || "";
+        const davinciMessage = davinciResponse.choices?.[0]?.message.content || "";
 
-        addDavinciMessage({
-            chatId: ctx.chat?.id,
-            authorId: existingUser?.telegramId,
-            author: existingUser?.telegramUserName,
-            text: davinciMessage,
-        });
+        // addDavinciMessage({
+        //     chatId: ctx.chat?.id,
+        //     authorId: existingUser?.telegramId,
+        //     author: existingUser?.telegramUserName,
+        //     text: davinciMessage,
+        // });
 
         ctx.reply(`${davinciMessage}`);
     } while (true);
@@ -59,10 +59,7 @@ const davinciConverstaion = async (
 
 
 export const isCancel = (messsage: string) => {
-    if (messsage === '/cancel') {
-        return true;
-    }
-    return false;
+    return messsage === '/cancel';
 }
 
 export { davinciConverstaion };

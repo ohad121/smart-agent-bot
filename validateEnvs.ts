@@ -1,7 +1,5 @@
 export const validateEnvs = (ENVS: NodeJS.ProcessEnv) => {
     const ENV = ENVS.ENV;
-    const DATADOG_API_KEY = ENVS[`DATADOG_API_KEY_${ENV}`];
-    const DATADOG_APP_KEY = ENVS[`DATADOG_APP_KEY_${ENV}`];
 
     if (!ENV) {
         throw new Error('ENV is required');
@@ -15,7 +13,7 @@ export const validateEnvs = (ENVS: NodeJS.ProcessEnv) => {
         throw new Error('APPLICATION_NAME is required');
     }
 
-    if (!DATADOG_API_KEY) {
+    if (ENVS.DATADOG_ENABLED_LOGS == "true" && !ENVS.DATADOG_API_KEY) {
         throw new Error('DATADOG_API_KEY is required');
     }
 

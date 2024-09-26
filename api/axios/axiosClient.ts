@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { configEnvs } from '../../config';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const OPEN_AI_URL = process.env.OPEN_AI_URL || '';
 const OPEN_AI_TOKEN = process.env.OPEN_AI_TOKEN || '';

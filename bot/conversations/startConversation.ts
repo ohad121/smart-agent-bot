@@ -1,9 +1,9 @@
-import { BotContext, ConverstaionContext } from '../types';
+import { BotContext, ConversationContext } from '../types';
 import { LOGGER } from '../../logger';
 import { addUser, getUserByTelegramId } from '../../mongodb/operations';
 
 
-async function captcha(conversation: ConverstaionContext, ctx: BotContext) {
+async function captcha(conversation: ConversationContext, ctx: BotContext) {
     if (ctx.from === undefined) return false;
     await ctx.reply(
         'Prove you are human! resolve the following multiplication <b> 7 * 8</b> ?'
@@ -13,7 +13,7 @@ async function captcha(conversation: ConverstaionContext, ctx: BotContext) {
 }
 
 const startConversation = async (
-    conversation: ConverstaionContext,
+    conversation: ConversationContext,
     ctx: BotContext
 ) => {
     const ok = await captcha(conversation, ctx);
